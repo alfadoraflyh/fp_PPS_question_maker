@@ -1,0 +1,269 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+        <link rel="stylesheet" href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://code.iconify.design/iconify-icon/1.0.3/iconify-icon.min.js"></script>
+    
+        <title>Bank Soal</title>
+    </head>
+
+    <nav class="navbar navbar-expand-sm navbar-light justify-content-end" style="background-color: white; border-bottom: 2px; border-color: rgb(87, 87, 87);">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="/soal">Soal</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/paketsoal">Paket Soal</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Dosen Pengampu</a>
+            </li>
+            <li class="nav-item">
+                <iconify-icon icon="gridicons:user-circle" style="color: #666;" width="35" height="35"></iconify-icon>
+            </li>
+        </ul>
+    </nav>
+
+    <body style="background-color: #1f2122">
+        <div class="container-fluid">
+            <div class="container pt-3 text-xs font-bold">
+                <h2 style="color: #ffffff;"">Soal Ujian</h2>
+            </div>
+            <div class="row px-16">
+                <div class="col-lg-4">
+                    <div style="background-color: #27292a; border-color:#27292a; border-width: 3px; height: 480px; border-radius: 30px;">
+                        <div class="addTopik" style="padding: 5px; margin-top: 15px;">
+                            <div id="messageTopik"></div>
+                            <form id="postTopik">
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" id="nama" name="nama" placeholder="Topik" aria-describedby="basic-addon2">
+                                    <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="submit">Add</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="h-75 overflow-auto px-2">
+
+                            <% if(topik.length) { %>
+
+                                <% topik.forEach(function(t){ %>
+
+                                    <form id="deleteTopik" class="input-group my-0">
+                                        <div class="input-group mb-3">
+                                            <input type="hidden" class="form-control" aria-describedby="basic-addon2" name="id_topik" id="id_topik" value="<%= t.id_topik %>">
+                                            <div class="form-control"><strong><%= t.nama_topik %></strong></div>
+                                            <div class="input-group-append">
+                                              <button class="btn btn-danger" type="submit">Delete</button>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                <% }); %>
+
+                            <% } %>
+
+                        </div>
+                    </div>
+                    <div class="pb-6"></div>
+                </div>
+                <div class="col-lg-8" style="margin-top: 20px;">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <form method="#" action="">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Cari soal">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-secondary" type="submit">
+                                            <iconify-icon icon="gg:search" style="color: #c3cfd9;"></iconify-icon>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-sm-6">
+                            <a href="/soal/tambah" class="btn btn-secondary float-right">
+                                Tambah Soal <iconify-icon icon="gg:add" style="color: white;"></iconify-icon>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div id="messageSoal"></div>
+                    <% if(soal) { %>
+                        <% if(soal.length) { %>
+                            <% soal.forEach(function(s){ %>
+                                <div style="background-color: white; border-color: #c3cfd9; border-width: 3px" class="mb-2">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <h6 class="text-muted px-3 pt-2"><%= s.pertanyaan %></h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-7 d-flex align-items-center">
+                                            <div class="px-3 pt-2">
+
+                                                <% if (s.tingkat_kesulitan == 1) { %>
+                                                    <span class="badge badge-pill badge-success">Mudah</span>
+                                                <% } else if (s.tingkat_kesulitan == 2) { %>
+                                                    <span class="badge badge-pill badge-warning">Sedang</span>
+                                                <% } else if (s.tingkat_kesulitan == 3) { %>
+                                                    <span class="badge badge-pill badge-danger">Susah</span>
+                                                <% } %>
+
+                                                <span class="badge badge-pill badge-secondary"><%= s.nama %></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5">
+                                            <div class="float-right px-3">
+                                                <form class="deleteSoal" style="display:inline-block;">
+                                                    <input type="hidden" class="id_soal" name="id_soal" value="<%= s.id %>">
+                                                    <button class="btn btn-outline-danger btn-sm" style="width: 90px;" type="submit">
+                                                        Hapus <iconify-icon icon="mdi:delete" style="color: #d3455b;"></iconify-icon>
+                                                    </button>
+                                                </form>
+                                                <a href="/soal/<%= s.id %>" class="btn btn-outline-secondary btn-sm" style="width: 90px;">
+                                                    Edit <iconify-icon icon="mdi:edit" style="color: #676767;"></iconify-icon>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% }); %>
+                        <% } %>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            const messageTopik= document.getElementById('messageTopik')
+            const messageSoal= document.getElementById('messageSoal')
+            const postTopik = document.getElementById('postTopik')
+            const deleteTopikForms = document.querySelectorAll('.input-group.my-0')
+            const deleteSoalForms = document.querySelectorAll('.deleteSoal')
+            
+
+            postTopik.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const url = `http://localhost:3000/api/topik`
+
+                let data = {
+                    nama: document.getElementById('nama').value
+                };
+        
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => {
+                    if (response.status === 201) {
+                        location.reload()
+                    } else {
+                        messageTopik.textContent = 'Topik tidak berhasil ditambahkan!';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    messageTopik.textContent = 'An error occurred while inserting the record.';
+                });
+            });
+
+            deleteTopikForms.forEach(function(form) {
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    const id = form.querySelector('#id_topik').value;
+                    const url = `http://localhost:3000/api/topik/${id}`
+            
+                    fetch(url, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(response => {
+                        if (response.status === 200) {
+                            location.reload()
+                        } else {
+                            messageTopik.textContent = 'Topik tidak berhasil dihapus!';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        messageTopik.textContent = 'An error occurred while deleting the record.';
+                    });
+                });
+            });
+        
+            deleteSoalForms.forEach(function(form) {
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    const id = form.querySelector('.id_soal').value;
+                    const url = `http://localhost:3000/api/soal/${id}`;
+            
+                    fetch(url, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(response => {
+                        if (response.status === 200) {
+                            location.reload()
+                        } else {
+                            messageSoal.textContent = 'Soal tidak berhasil dihapus!';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        messageSoal.textContent = 'An error occurred while deleting the record.';
+                    });
+                });
+            })
+
+            // pagination
+            // let currentPage = 1;
+            // let totalPages = 1;
+
+            // document.getElementById('prev').addEventListener('click', function(e) {
+            // e.preventDefault();
+            // if (currentPage > 1) {
+            //     currentPage--;
+            //     fetchSoal(currentPage);
+            // }
+            // });
+
+            // document.getElementById('next').addEventListener('click', function(e) {
+            // e.preventDefault();
+            // if (currentPage < totalPages) {
+            //     currentPage++;
+            //     fetchSoal(currentPage);
+            // }
+            // });
+
+            // function fetchSoal(page) {
+            // fetch(`/api/soal?page=${page}&limit=10`)
+            //     .then(response => response.json())
+            //     .then(data => {
+            //         // Update the soal list
+            //         // ...
+
+            //         // Update the pagination controls
+            //         document.getElementById('currentPage').textContent = page;
+            //         document.getElementById('totalPages').textContent = Math.ceil(data.total / 10);
+            //     });
+            // }
+
+            // // Fetch the first page of soal when the page loads
+            // fetchSoal(currentPage);
+
+        </script>
+    </body>
+</html>
